@@ -42,7 +42,7 @@ function loadStudents() {
 function loadSemesters() {
   const semestersRaw = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'semesters.json'), 'utf8'));
   return semestersRaw.map(sem => {
-    if (sem.id === 'vol-2') {
+    if (sem.id === '춤출자유vol-2') {
       return {
         ...sem,
         description: `
@@ -77,7 +77,7 @@ function loadSemesters() {
         `
       };
     }
-    if (sem.id === 'vol-1') {
+    if (sem.id === '춤출자유vol-1') {
       return {
         ...sem,
         description: `

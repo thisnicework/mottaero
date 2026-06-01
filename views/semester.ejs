@@ -32,7 +32,7 @@
         <%- activeSemester.description %>
           <% } %>
 
-            <% if (activeSemester.id==='vol-2' ) { %>
+            <% if (activeSemester.id==='춤출자유vol-2' ) { %>
               <div id="booking-container" class="booking-section">
                 <h2 class="bold"
                   style="color: var(--color-high); margin-bottom: 1.5rem; border-top: 1px solid var(--color-fg); padding-top: 2rem;">
@@ -63,7 +63,7 @@
                     </div>
                   </div>
                   <div id="form-error" class="form-error-msg" style="display: none;"></div>
-                  <button type="submit" class="submit-btn bold">예매하기 (RESERVE)</button>
+                  <button type="submit" class="submit-btn bold" style="display: none;">예매하기 (RESERVE)</button>
                 </form>
 
                 <!-- Glassmorphic Success State (initially hidden) -->
@@ -89,6 +89,21 @@
                   const resetBtn = document.getElementById('reset-booking-btn');
 
                   if (!form) return;
+
+                  const privacyConsent = document.getElementById('privacy-consent');
+                  const submitBtn = form.querySelector('.submit-btn');
+
+                  if (privacyConsent && submitBtn) {
+                    submitBtn.style.display = privacyConsent.checked ? 'block' : 'none';
+
+                    privacyConsent.addEventListener('change', function () {
+                      submitBtn.style.display = this.checked ? 'block' : 'none';
+                    });
+
+                    form.addEventListener('reset', function () {
+                      submitBtn.style.display = 'none';
+                    });
+                  }
 
                   form.addEventListener('submit', function (e) {
                     e.preventDefault();
@@ -117,7 +132,7 @@
                     submitBtn.disabled = true;
                     submitBtn.textContent = '처리 중 (PROCESSING...)';
 
-                    fetch('/projects/vol-2/book', {
+                    fetch('/projects/춤출자유vol-2/book', {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json',
