@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import https from 'https';
 import * as db from './data.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,8 +23,14 @@ app.use((req, res, next) => {
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Serve static assets
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static assets with caching headers for media
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res, filePath) => {
+    if (filePath.endsWith('.mp4') || filePath.endsWith('.jpg') || filePath.endsWith('.jpeg') || filePath.endsWith('.png')) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
+}));
 
 // Parse JSON and form request bodies
 app.use(express.json());
@@ -263,49 +268,7 @@ app.post('/admin/delete', requireAdminAuth, async (req, res) => {
 });
 
 
-// Proxy endpoint to stream video from Supabase and cache it aggressively on the client/browser
-app.get('/video/meottearo.mp4', (req, res) => {
-  const videoUrl = 'https://pysxtikwokpcyfjstdyv.supabase.co/storage/v1/object/public/videos/meottearo.mp4';
-  
-  const options = {
-    headers: {}
-  };
-  if (req.headers.range) {
-    options.headers['Range'] = req.headers.range;
-  }
-  
-  const proxyReq = https.get(videoUrl, options, (proxyRes) => {
-    res.status(proxyRes.statusCode);
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    
-    const headersToCopy = [
-      'content-type',
-      'content-length',
-      'content-range',
-      'accept-ranges',
-      'etag'
-    ];
-    for (const h of headersToCopy) {
-      if (proxyRes.headers[h]) {
-        res.setHeader(h, proxyRes.headers[h]);
-      }
-    }
-    
-    proxyRes.pipe(res);
-  });
 
-  proxyReq.on('error', (err) => {
-    console.error('Video proxy error:', err);
-    if (!res.headersSent) {
-      res.sendStatus(500);
-    }
-  });
-
-  // Critical: If client cancels or closes connection, abort the proxy request to free sockets
-  req.on('close', () => {
-    proxyReq.destroy();
-  });
-});
 
 // Export app for serverless environments (Vercel)
 export default app;
