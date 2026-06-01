@@ -212,7 +212,12 @@ app.post('/admin/bookings/delete', async (req, res) => {
 });
 
 
-// Start Server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
+// Export app for serverless environments (Vercel)
+export default app;
+
+// Start Server locally
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+  });
+}
