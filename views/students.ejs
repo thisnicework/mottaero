@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+
+<main class="fixed">
+  <section id="one" class="left" aria-expanded="true">
+    <div class="students">
+      <% students.forEach(function(student) { %>
+        <a class="student block" href="/students/<%= student.id %>">
+          <h2 class="bold"><%= student.name %></h2>
+        </a>
+      <% }); %>
+    </div>
+  </section>
+  <section id="two" class="right" aria-expanded="false">
+  </section>
+</main>
+
+<%- include('partials/footer') %>

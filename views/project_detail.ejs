@@ -1,0 +1,93 @@
+<%- include('partials/header') %>
+
+<main class="fixed">
+  <!-- LEFT COLUMN (#one): Sibling navigator -->
+  <section id="one" class="left" aria-expanded="false">
+    <% if (context === 'student') { %>
+      <!-- Sibling navigation from Student Profile -->
+      <div class="student">
+        <div class="info">
+          <h2 class="bold"><%= student.name %></h2>
+          <% if (false) { %>
+          <ul class="links">
+            <% if (student.links) { %>
+              <% student.links.forEach(function(link) { %>
+                <li>
+                  <% if (link.type === 'globe') { %>
+                    🌐 <a href="<%= link.url %>" rel="noopener noreferrer" target="_blank"><%= link.text %></a>
+                  <% } else if (link.type === 'email') { %>
+                    ✉️ <a href="<%= link.url %>"><%= link.text %></a>
+                  <% } %>
+                </li>
+              <% }); %>
+            <% } %>
+          </ul>
+          <% } %>
+        </div>
+      </div>
+      <hr>
+      <div class="projects">
+        <% siblingProjects.forEach(function(p) { %>
+          <% const sem = db.getSemester(p.semesterId); %>
+          <a class="project block <%= p.slug === project.slug ? 'active' : '' %>" href="/students/<%= student.id %>/<%= p.slug %>">
+            <img class="thumb" src="<%= p.thumbUrl %>" alt="preview image for <%= p.title %>">
+            <div>
+              <h2 class="bold"><%= p.title %></h2>
+              <h3 class="italic"><%= sem ? sem.title : '' %>&thinsp;&mdash;&thinsp;<%= sem ? sem.term : '' %></h3>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <!-- Sibling navigation from Semester List -->
+      <div class="semester">
+        <div class="info">
+          <h2 class="bold"><%= semester.title %></h2>
+          <h3><%= semester.term %></h3>
+        </div>
+      </div>
+      <hr>
+      <div class="projects">
+        <% siblingProjects.forEach(function(p) { %>
+          <% const stud = db.getStudent(p.studentId); %>
+          <a class="project block <%= p.slug === project.slug ? 'active' : '' %>" href="/projects/<%= semester.id %>/<%= p.slug %>">
+            <img class="thumb" src="<%= p.thumbUrl %>" alt="preview image for <%= p.title %>">
+            <div>
+              <h2><%= stud ? stud.name : 'Student' %></h2>
+              <h3 class="bold"><%= p.title %></h3>
+            </div>
+          </a>
+        <% }); %>
+      </div>
+    <% } %>
+  </section>
+
+  <!-- RIGHT COLUMN (#two): Project content gallery -->
+  <section id="two" class="right" aria-expanded="true">
+    <div class="project">
+      <div class="headline">
+        <h2><a href="/students/<%= student.id %>"><%= student.name %></a>&thinsp;&mdash;&thinsp;<span class="bold"><%= project.title %></span></h2>
+        <h3 class="italic"><a href="/projects/<%= semester.id %>"><%= semester.title %></a>&thinsp;&mdash;&thinsp;<%= semester.term %></h3>
+      </div>
+      <div class="project-text">
+        <%- project.description %>
+      </div>
+    </div>
+    <hr>
+    <div class="gallery">
+      <% if (project.gallery) { %>
+        <% project.gallery.forEach(function(item) { %>
+          <% if (item.type === 'iframe') { %>
+            <div class="iframe">
+              <iframe allowfullscreen src="<%= item.url %>"></iframe>
+            </div>
+          <% } else { %>
+            <img class="gallery" src="<%= item.url %>" alt="<%= item.name || 'image' %>">
+          <% } %>
+        <% }); %>
+      <% } %>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

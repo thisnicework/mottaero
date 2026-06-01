@@ -1,0 +1,745 @@
+/* newmediaclass.css */
+
+@import url("/assets/css/normalize.css");
+@import url("/assets/css/fonts.css");
+
+:root {
+	--color-bg:rgb(255,255,255);
+	--color-fg:rgb(0,0,0);
+	--color-high:rgb(0,0,255);
+	--color-err:rgb(255,0,0);
+	--color-low:rgb(240,240,240);
+	--color-mid:rgba(0,0,0,0.15);
+	--content-width:1440px;
+	--margin:1rem;
+}
+
+*, *::before, *::after {
+	-webkit-box-sizing:border-box;
+	box-sizing:border-box;
+	margin:0;
+	padding:0;
+}
+
+*::-moz-selection {
+	background-color:var(--color-low);
+}
+
+*::selection {
+	background-color:var(--color-low);
+}
+
+html {
+	font-family:"Inter","Neue Haas Grotesk",-apple-system,sans-serif;
+	-webkit-font-kerning:normal;
+	font-kerning:normal;
+	font-size:1em;
+	font-style:normal;
+	font-weight:normal;
+	height:100vh;
+	letter-spacing:normal;
+	line-height:1.3;
+	margin:0 auto;
+	max-width:var(--content-width);
+	overflow-y:scroll;
+	/* smooth scrolling */
+	-webkit-overflow-scrolling:touch;
+	/* remove highlight when clicking link */
+	-webkit-tap-highlight-color:transparent;
+}
+
+body {
+	color:var(--color-fg);
+	margin:0 var(--margin);
+	/*
+	opacity:0;
+	-webkit-animation:init 0.15s ease-in 0.03s 1 forwards;
+	animation:init 0.15s ease-in 0.03s 1 forwards;
+	*/
+}
+
+a {
+	color:var(--color-fg);
+	outline:none;
+	text-decoration:none;
+}
+
+a:link {
+	outline:none;
+	text-decoration:none;
+}
+
+a:visited {
+	outline:none;
+	text-decoration:line-through;
+}
+
+a:hover {
+	color:var(--color-high);
+	outline:none;
+	text-decoration:none;
+}
+
+a:focus {
+	color:var(--color-high);
+	outline:none;
+	text-decoration:none;
+}
+
+a:active {
+	color:var(--color-high);
+	outline:none;
+	text-decoration:none;
+}
+
+em, i {
+	font-style:italic;
+}
+
+hr {
+	border:none;
+	border-bottom:1px;
+	border-bottom-color:var(--color-fg);
+	border-bottom-style:solid;
+	margin-bottom:var(--margin);
+}
+
+strong {
+	font-weight:bold;
+}
+
+u {
+	text-decoration-skip:ink;
+}
+
+ul {
+	list-style-type:none;
+}
+
+h1, h2, h3, h4, h5, h6, p, ul, ol, pre, blockquote {
+	font-size:inherit;
+	line-height:inherit;
+	margin-top:0;
+	margin-left:0;
+	margin-right:0;
+	margin-bottom:var(--margin);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight:normal;
+}
+
+h1 {
+	font-size:1.5rem;
+}
+
+h2 {
+	font-size:1rem;
+}
+
+header {
+	display:flex;
+	flex-direction:column;
+	justify-content:space-between;
+	margin-top:var(--margin);
+}
+
+footer {
+	border-top:1px;
+	border-top-style:solid;
+	font-size:1rem;
+	overflow:auto;
+	padding-top:var(--margin);
+}
+
+a:link[href*="//"]:not([href*=".dev.localhost"]):not([href*=".seoularts.ac.kr"]),
+a:link[href^="mailto:"],
+a:link[href^="tel:"] {
+	cursor:-webkit-ne-resize;
+	cursor:ne-resize;
+}
+
+a:link[href*="//"]:not([href*=".dev.localhost"]):not([href*=".seoularts.ac.kr"])::after,
+a:link[href^="mailto:"]::after,
+a:link[href^="tel:"]::after {
+	color:var(--color-high);
+	content:"\2197";
+	/* remove a:link text-decoration */
+	display:inline-block;
+	font-size:0.55rem;
+	margin-right:-0.1rem;
+	/* align smaller text with cap-height */
+	vertical-align:super;
+}
+
+img[alt=""],
+img:not([alt]) {
+	border:3px dashed var(--color-err);
+}
+
+header nav#menu {
+	margin-bottom:var(--margin);
+}
+
+header nav#menu > a:not(:last-of-type) {
+	margin-right:1rem;
+}
+
+main a.block:not(:last-of-type) {
+	border-bottom:1px;
+	border-bottom-style:solid;
+	margin-bottom:var(--margin);
+}
+
+main a.block:hover {
+	color:var(--color-high);
+}
+
+main a.block.active > * {
+	color:var(--color-high);
+}
+
+/*
+main a.block.empty:hover > * {
+	color:var(--color-mid);
+}
+*/
+
+
+/* Robert Public */
+
+.pub  a::after {
+	color: var(--color-high);
+	content: "\2191";
+	display: inline-block;
+	font-size: 0.55rem;
+	font-style: normal;
+	margin-right: -0.1rem;
+	vertical-align: super;
+}
+
+/* Robert Public End */
+
+main div.column {
+	hyphens:auto;
+	max-width:480px;
+	word-wrap:break-word;
+}
+
+main div.gallery {
+	font-size:0;
+	margin-bottom:var(--margin);
+}
+
+main div.gallery > div.iframe {
+	background-color:var(--color-mid);
+	margin-bottom:var(--margin);
+	padding-bottom:56.25%;
+	position:relative;
+}
+
+main div.gallery > div.iframe > iframe {
+	border:none;
+	height:100%;
+	position:absolute;
+	left:0;
+	top:0;
+	min-width:100%;
+}
+
+main div.gallery > img.gallery {
+	object-fit:contain;
+	width:100%;
+}
+
+main div.gallery > img.gallery:not(:last-of-type) {
+	margin-bottom:var(--margin);
+}
+
+main div.info > h2,
+main div.info > h3 {
+	color:var(--color-high);
+}
+
+main div.init {
+	opacity:0;
+	-webkit-animation:init 0.25s ease-in 0.05s 1 forwards;
+	animation:init 0.25s ease-in 0.05s 1 forwards;
+}
+
+main div.project a:link[href^="/"]::after,
+main div.project a:link[href^="#"]::after,
+main div.student a:link[href^="/"]::after,
+main div.student a:link[href^="#"]::after,
+main div.project a:link[href*="//"][href*=".dev.localhost"]::after,
+main div.student a:link[href*="//"][href*=".dev.localhost"]::after,
+main div.project a:link[href*="//"][href*=".seoularts.ac.kr"]::after,
+main div.student a:link[href*="//"][href*=".seoularts.ac.kr"]::after {
+	color:var(--color-high);
+	content:"\2191";
+	/* remove a:link text-decoration */
+	display:inline-block;
+	font-size:0.55rem;
+	font-style:normal;
+	margin-right:-0.1rem;
+	/* align smaller text with cap-height */
+	vertical-align:super;
+}
+
+main div.project p,
+main div.student p {
+	hyphens:auto;
+	word-wrap:break-word;
+}
+
+main div.project-text h1,
+main div.student-text h1 {
+	font-size:1rem;
+}
+
+main div.project-text figure,
+main div.student-text figure {
+	display:none;
+}
+
+main div.project-text pre,
+main div.student-text pre {
+	white-space:pre-wrap;
+}
+
+main div.project-text ul,
+main div.student-text ul {
+	padding-left:var(--margin);
+	list-style-type:"\2013\2009\2009";
+}
+
+main div.project-text ol,
+main div.student-text ol {
+	padding-left:var(--margin);
+	list-style-type:decimal;
+}
+
+main div.projects a.block,
+main div.semester,
+main div.student {
+	display:flex;
+	flex-direction:row;
+}
+
+main div.projects a.block h2,
+main div.projects a.block h3,
+main div.semesters a.block h2,
+main div.semesters a.block h3 {
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+}
+
+main div.projects img,
+main div.semester img,
+main div.student img {
+	height:57px;
+	width:57px;
+	min-height:57px;
+	min-width:57px;
+	margin-right:var(--margin);
+}
+
+/*
+main div.semester span.placeholder,
+main div.student span.placeholder {
+	border:3px;
+	border-color:var(--color-high);
+	border-style:solid;
+	margin-right:var(--margin);
+	margin-bottom:var(--margin);
+	width:57px;
+	height:57px;
+	min-width:57px;
+	min-height:57px;
+}
+*/
+
+main div.semesters > a.block:last-child {
+	font-style:italic;
+}
+
+main img + * {
+	overflow:hidden;
+}
+
+[aria-current] {
+	color:var(--color-high);
+}
+
+#error {
+	font-size:calc((1vw + 1vh + 0.5vmin) * 10);
+	text-align:center;
+}
+
+.blink {
+	-webkit-animation:blink 1s step-end infinite;
+	animation:blink 1s step-end infinite;
+}
+
+.block {
+	display:block;
+}
+
+.bold {
+	font-weight:bold;
+}
+
+.intro {
+	font-size:5rem;
+	font-weight:bold;
+}
+
+.italic {
+	font-style:italic;
+}
+
+.line-through {
+	text-decoration:line-through;
+}
+
+.without-underline,
+.without-underline:link {
+	text-decoration:none;
+}
+
+@-webkit-keyframes blink {
+	50% {
+		visibility:hidden;
+	}
+}
+
+@keyframes blink {
+	50% {
+		visibility:hidden;
+	}
+}
+
+@-webkit-keyframes init {
+	from {
+		opacity:0;
+	}
+	to {
+		opacity:1;
+	}
+}
+
+@keyframes init {
+	from {
+		opacity:0;
+	}
+	to {
+		opacity:1;
+	}
+}
+
+/* 319px */
+@media (max-width:19.938em) {
+	html {
+		font-size:1em;
+	}
+}
+
+/* 320px */
+@media (min-width:20em) {
+	/*
+	html {
+		font-size:1.15em;
+	}
+	*/
+}
+
+/* 480px */
+@media (min-width:30em) {
+	/*
+	html {
+		font-size:1.3em;
+	}
+	*/
+}
+
+/* 640px */
+@media (min-width:40em) {
+	/*
+	html {
+		font-size:1.45em;
+	}
+	*/
+	header {
+		flex-direction:row;
+	}
+	header nav#menu {
+		line-height:2.35;
+	}
+}
+
+/* 800px */
+@media (min-width:50em) {
+	/*
+	html {
+		font-size:1.6em;
+	}
+	*/
+}
+
+@media (max-width:59.938em) {
+	[aria-expanded="false"] {
+		display:none;
+	}
+	[aria-expanded="true"] {
+		display:initial;
+	}
+	main section#one {
+		border-bottom:1px;
+		border-bottom-style:solid;
+		margin-bottom:var(--margin);
+	}
+}
+
+/* 960px */
+@media (min-width:60em) {
+	main {
+		margin:0 auto;
+	}
+	main section {
+		height:calc(100vh - 5.5rem);
+		overflow-y:scroll;
+		padding-left:1rem;
+		padding-right:1rem;
+		position:absolute;
+		top:calc(5.5rem - 1px);
+	}
+	main section.left {
+		left:0;
+		width:calc((100% / 5) * 2);
+		max-width:calc((var(--content-width) / 5) * 2);
+	}
+	main section.right {
+		left:calc((100% / 5) * 2);
+		width:calc((100% / 5) * 3);
+		max-width:calc((var(--content-width) / 5) * 3);
+	}
+	main.fixed + footer {
+		display:none;
+	}
+}
+
+/* 1441px */
+@media (min-width:90.063em) {
+	main section.left {
+		left:calc((100% / 2) - (var(--content-width) / 2));
+	}
+	main section.right {
+		left:calc(((100% / 2) - (var(--content-width) / 2)) + ((var(--content-width) / 5) * 2));
+	}
+}
+
+/*
+@media (orientation:landscape) {
+}
+
+@media (orientation:portrait) {
+}
+
+@media (orientation:landscape) and (min-width:960px) {
+}
+
+@media (orientation:portrait), (max-width:960px) {
+}
+*/
+
+/*
+@supports (font-variation-settings:normal) {
+	html {
+	font-family:"Inter var","Inter","Neue Haas Grotesk",-apple-system,sans-serif;
+	}
+}
+*/
+
+/*
+@supports not (list-style-type:"\2013\2002\200a") {
+	main li::before {
+		content:"\2013\2002\200a";
+		margin-left:-1.0417em;
+	}
+}
+*/
+
+/* WTF?! no rem or em?! */
+/*
+@-moz-document url-prefix() {
+	html {
+		max-width:960px;
+	}
+}
+*/
+
+/* Booking Form & Admin Dashboard Styles */
+
+.booking-section {
+	margin-top: 2rem;
+	margin-bottom: 3rem;
+	max-width: 480px;
+}
+
+.booking-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+	margin-top: 1rem;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.form-group label {
+	font-size: 0.85rem;
+	color: var(--color-fg);
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group select {
+	background-color: var(--color-bg);
+	border: 1px solid var(--color-fg);
+	color: var(--color-fg);
+	padding: 0.75rem 1rem;
+	font-size: 1rem;
+	outline: none;
+	transition: border-color 0.2s, box-shadow 0.2s;
+	font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+	border-color: var(--color-high);
+	box-shadow: 0 0 0 2px rgba(0, 0, 255, 0.15);
+}
+
+.form-group input::placeholder {
+	color: var(--color-mid);
+}
+
+.form-error-msg {
+	color: var(--color-err);
+	font-size: 0.9rem;
+	font-weight: bold;
+	margin-top: 0.5rem;
+}
+
+.submit-btn {
+	background-color: var(--color-fg);
+	color: var(--color-bg);
+	border: 1px solid var(--color-fg);
+	padding: 0.85rem 1.5rem;
+	font-size: 1rem;
+	cursor: pointer;
+	text-transform: uppercase;
+	transition: background-color 0.2s, color 0.2s;
+	margin-top: 0.5rem;
+	text-align: center;
+}
+
+.submit-btn:hover {
+	background-color: var(--color-high);
+	color: var(--color-bg);
+	border-color: var(--color-high);
+}
+
+.submit-btn:disabled {
+	background-color: var(--color-low);
+	color: var(--color-mid);
+	border-color: var(--color-low);
+	cursor: not-allowed;
+}
+
+/* Glassmorphic Success State */
+.booking-success {
+	margin-top: 1rem;
+	border: 1px solid var(--color-high);
+	background: rgba(0, 0, 255, 0.03);
+	padding: 2rem;
+	animation: init 0.3s ease-out;
+}
+
+.success-card {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.success-icon {
+	width: 48px;
+	height: 48px;
+	border-radius: 50%;
+	background-color: var(--color-high);
+	color: var(--color-bg);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.5rem;
+	font-weight: bold;
+	margin-bottom: 0.5rem;
+}
+
+.success-desc {
+	font-size: 0.95rem;
+	line-height: 1.4;
+}
+
+.success-details {
+	display: flex;
+	flex-direction: column;
+	gap: 0.6rem;
+	font-size: 1rem;
+	padding: 0.5rem 0;
+}
+
+.highlight-code {
+	color: var(--color-high);
+	font-family: monospace;
+	background: var(--color-low);
+	padding: 0.2rem 0.5rem;
+	font-size: 0.9rem;
+}
+
+.reset-btn {
+	background-color: transparent;
+	color: var(--color-fg);
+	border: 1px solid var(--color-fg);
+	padding: 0.75rem 1.2rem;
+	font-size: 0.9rem;
+	cursor: pointer;
+	text-align: center;
+	transition: background-color 0.2s, color 0.2s;
+	margin-top: 0.5rem;
+}
+
+.reset-btn:hover {
+	background-color: var(--color-fg);
+	color: var(--color-bg);
+}
+
+/* Admin Dashboard Elements */
+.admin-table th,
+.admin-table td {
+	border-bottom: 1px solid var(--color-low);
+}
+
+.admin-table tr:hover {
+	background-color: var(--color-low);
+}
+
+.delete-booking-btn:hover {
+	color: var(--color-fg) !important;
+}
+

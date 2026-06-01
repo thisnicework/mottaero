@@ -1,0 +1,170 @@
+<%- include('partials/header') %>
+
+  <main class="fixed">
+    <section id="one" class="left" aria-expanded="false">
+      <div class="semesters">
+        <% semesters.forEach(function(semester) { %>
+          <a class="semester block <%= semester.id === activeSemester.id ? 'active' : '' %> <%= semester.isEmpty ? 'empty' : '' %>"
+            href="/projects/<%= semester.id %>">
+            <h2 class="bold">
+              <%= semester.title %>
+            </h2>
+            <h3>
+              <%= semester.term %>
+            </h3>
+          </a>
+          <% }); %>
+      </div>
+    </section>
+    <section id="two" class="right" aria-expanded="true">
+      <div class="semester">
+        <div class="info">
+          <h2 class="bold">
+            <%= activeSemester.title %>
+          </h2>
+          <h3>
+            <%= activeSemester.term %>
+          </h3>
+        </div>
+      </div>
+      <hr>
+      <% if (activeSemester.description) { %>
+        <%- activeSemester.description %>
+          <% } %>
+
+            <% if (activeSemester.id==='vol-2' ) { %>
+              <div id="booking-container" class="booking-section">
+                <h2 class="bold"
+                  style="color: var(--color-high); margin-bottom: 1.5rem; border-top: 1px solid var(--color-fg); padding-top: 2rem;">
+                  TICKET RESERVATION</h2>
+                <form id="booking-form" class="booking-form" novalidate>
+                  <div class="form-group">
+                    <label for="name" class="bold">이름 (Name)</label>
+                    <input type="text" id="name" name="name" required placeholder="이름을 입력해 주세요">
+                  </div>
+                  <div class="form-group">
+                    <label for="studentId" class="bold">학번 & 학과 (Student ID & Dept)</label>
+                    <input type="text" id="studentId" name="studentId" required placeholder="예: 2632000 / 실음과">
+                  </div>
+                  <div class="form-group">
+                    <label for="phone" class="bold">연락처 (Phone)</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="예: 010-1234-5678">
+                  </div>
+                  <div id="form-error" class="form-error-msg" style="display: none;"></div>
+                  <button type="submit" class="submit-btn bold">예매하기 (RESERVE)</button>
+                </form>
+
+                <!-- Glassmorphic Success State (initially hidden) -->
+                <div id="booking-success" class="booking-success" style="display: none;">
+                  <div class="success-card">
+                    <div class="success-icon">✓</div>
+                    <h2 class="bold">예매 완료 (Reservation Confirmed)</h2>
+                    <p class="success-desc">파티 입장을 위한 예매가 정상적으로 처리되었습니다.</p>
+                    <hr>
+                    <div class="success-details">
+                      <p><strong>이름 (Name):</strong> <span id="res-name" class="bold"></span></p>
+                    </div>
+                    <button id="reset-booking-btn" class="reset-btn bold">추가 예매하기 (New Booking)</button>
+                  </div>
+                </div>
+              </div>
+
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  const form = document.getElementById('booking-form');
+                  const errorDiv = document.getElementById('form-error');
+                  const successDiv = document.getElementById('booking-success');
+                  const resName = document.getElementById('res-name');
+                  const resetBtn = document.getElementById('reset-booking-btn');
+
+                  if (!form) return;
+
+                  form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    errorDiv.style.display = 'none';
+
+                    const name = document.getElementById('name').value.trim();
+                    const studentId = document.getElementById('studentId').value.trim();
+                    const phone = document.getElementById('phone').value.trim();
+                    const tickets = 1; // Always 1 ticket
+
+                    if (!name || !studentId || !phone) {
+                      errorDiv.textContent = '모든 필드를 올바르게 입력해 주세요.';
+                      errorDiv.style.display = 'block';
+                      return;
+                    }
+
+                    const submitBtn = form.querySelector('.submit-btn');
+                    const originalText = submitBtn.textContent;
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = '처리 중 (PROCESSING...)';
+
+                    fetch('/projects/vol-2/book', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      body: JSON.stringify({ name, studentId, phone, tickets })
+                    })
+                      .then(res => res.json())
+                      .then(data => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+
+                        if (data.error) {
+                          errorDiv.textContent = data.error;
+                          errorDiv.style.display = 'block';
+                        } else if (data.success) {
+                          // Populate success state details
+                          resName.textContent = data.booking.name;
+
+                          // Hide form, show success state
+                          form.style.display = 'none';
+                          successDiv.style.display = 'block';
+                        }
+                      })
+                      .catch(err => {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalText;
+                        errorDiv.textContent = '서버 통신 오류가 발생했습니다. 다시 시도해 주세요.';
+                        errorDiv.style.display = 'block';
+                      });
+                  });
+
+                  if (resetBtn) {
+                    resetBtn.addEventListener('click', function () {
+                      form.reset();
+                      form.style.display = 'block';
+                      successDiv.style.display = 'none';
+                    });
+                  }
+                });
+              </script>
+              <% } %>
+
+                <div class="projects">
+                  <% if (projects.length===0) { %>
+                    <% if (!activeSemester.description) { %>
+                      <p>No projects documented for this semester yet.</p>
+                      <% } %>
+                        <% } else { %>
+                          <% projects.forEach(function(p) { %>
+                            <% const student=db.getStudent(p.studentId); %>
+                              <a class="project block" href="/projects/<%= activeSemester.id %>/<%= p.slug %>">
+                                <img class="thumb" src="<%= p.thumbUrl %>" alt="preview image of <%= p.title %>">
+                                <div>
+                                  <h2>
+                                    <%= student ? student.name : 'Student' %>
+                                  </h2>
+                                  <h3 class="bold">
+                                    <%= p.title %>
+                                  </h3>
+                                </div>
+                              </a>
+                              <% }); %>
+                                <% } %>
+                </div>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>

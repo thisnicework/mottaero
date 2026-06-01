@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+
+<main class="fixed">
+  <section id="one" class="left" aria-expanded="false">
+    <div class="students">
+      <% students.forEach(function(student) { %>
+        <a class="student block <%= student.id === activeStudent.id ? 'active' : '' %>" href="/students/<%= student.id %>">
+          <h2 class="bold"><%= student.name %></h2>
+        </a>
+      <% }); %>
+    </div>
+  </section>
+  <section id="two" class="right" aria-expanded="true">
+    <div class="student">
+      <div class="info">
+        <h2 class="bold"><%= activeStudent.name %></h2>
+        <% if (false) { %>
+        <ul class="links">
+          <% if (activeStudent.links) { %>
+            <% activeStudent.links.forEach(function(link) { %>
+              <li>
+                <% if (link.type === 'globe') { %>
+                  🌐 <a href="<%= link.url %>" rel="noopener noreferrer" target="_blank"><%= link.text %></a>
+                <% } else if (link.type === 'email') { %>
+                  ✉️ <a href="<%= link.url %>"><%= link.text %></a>
+                <% } %>
+              </li>
+            <% }); %>
+          <% } %>
+        </ul>
+        <% } %>
+      </div>
+    </div>
+    <hr>
+    <div class="projects">
+      <% if (projects.length === 0) { %>
+        <p>No projects documented for this student yet.</p>
+      <% } else { %>
+        <% projects.forEach(function(p) { %>
+          <% const semester = db.getSemester(p.semesterId); %>
+          <a class="project block" href="/students/<%= activeStudent.id %>/<%= p.slug %>">
+            <img class="thumb" src="<%= p.thumbUrl %>" alt="preview image for <%= p.title %>">
+            <div>
+              <h2 class="bold"><%= p.title %></h2>
+              <h3 class="italic"><%= semester ? semester.title : '' %>&thinsp;&mdash;&thinsp;<%= semester ? semester.term : '' %></h3>
+            </div>
+          </a>
+        <% }); %>
+      <% } %>
+    </div>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

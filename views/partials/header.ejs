@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="MOTTAERO">
+    <meta name="description" content="MOTTAERO at Seoul Institute of the Arts">
+    <meta name="keywords" content="conceptual, computation, crafts, critical, design, development, digital, engineering, exhibition, installation, interaction, new media, programming, prototyping, research">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="license" href="//creativecommons.org/licenses/by-nc-nd/4.0">
+    <link rel="stylesheet" type="text/css" href="/assets/css/index.css">
+    
+    <% if (activeMenu === 'projects' || activeMenu === 'students') { %>
+      <script src="/assets/js/scroll.js"></script>
+    <% } %>
+    
+    <% if (activeMenu === 'projects' && typeof activeSemester === 'undefined' && typeof project === 'undefined') { %>
+      <script defer src="/assets/js/reload.js"></script>
+    <% } %>
+    
+    <script defer src="/assets/js/script.js"></script>
+    <title><%= title %></title>
+  </head>
+  <body>
+    <header>
+      <h1><a href="/"><span class="bold">// MOTTAERO</span></a></h1>
+      <nav id="menu">
+        <a <%= activeMenu === 'projects' ? 'aria-current="page"' : '' %> href="/projects">projects</a>
+        <a <%= activeMenu === 'students' ? 'aria-current="page"' : '' %> href="/students">students</a>
+        <a <%= activeMenu === 'about' ? 'aria-current="page"' : '' %> href="/about">about</a>
+      </nav>
+    </header>
+    <hr>
