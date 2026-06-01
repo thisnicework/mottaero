@@ -177,8 +177,25 @@ app.post('/projects/:semesterId/book', async (req, res) => {
   }
 });
 
+// Basic Auth middleware for admin routes
+function requireAdminAuth(req, res, next) {
+  const auth = req.headers['authorization'];
+  if (!auth || !auth.startsWith('Basic ')) {
+    res.set('WWW-Authenticate', 'Basic realm="Admin"');
+    return res.status(401).send('Authentication required');
+  }
+  const credentials = Buffer.from(auth.slice(6), 'base64').toString();
+  const colonIndex = credentials.indexOf(':');
+  const password = credentials.slice(colonIndex + 1);
+  if (password !== (process.env.ADMIN_PASSWORD || 'admin')) {
+    res.set('WWW-Authenticate', 'Basic realm="Admin"');
+    return res.status(401).send('Invalid credentials');
+  }
+  next();
+}
+
 // Route: Admin Bookings Dashboard
-app.get('/admin/bookings', async (req, res) => {
+app.get('/admin/bookings', requireAdminAuth, async (req, res) => {
   try {
     const bookings = await db.getBookings();
     res.render('bookings', {
@@ -192,8 +209,26 @@ app.get('/admin/bookings', async (req, res) => {
   }
 });
 
+// Route: Export Bookings as CSV
+app.get('/admin/bookings/export', requireAdminAuth, async (_req, res) => {
+  try {
+    const bookings = await db.getBookings();
+    const headers = ['이름', '학번/학과', '연락처', '예매일시'];
+    const rows = bookings.map(b => [b.name, b.studentId, b.phone, b.createdAt || '']);
+    const csv = [headers, ...rows]
+      .map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="bookings.csv"');
+    res.send('﻿' + csv);
+  } catch (error) {
+    console.error('Error in GET /admin/bookings/export:', error);
+    res.status(500).send('내보내기 중 오류가 발생했습니다.');
+  }
+});
+
 // Route: DELETE Booking (Admin Action)
-app.post('/admin/bookings/delete', async (req, res) => {
+app.post('/admin/bookings/delete', requireAdminAuth, async (req, res) => {
   const { code } = req.body;
   if (!code) {
     return res.status(400).json({ error: '예매 코드가 필요합니다.' });
