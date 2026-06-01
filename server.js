@@ -194,13 +194,8 @@ function requireAdminAuth(req, res, next) {
   next();
 }
 
-// Route: Admin redirect
-app.get('/admin', requireAdminAuth, (_req, res) => {
-  res.redirect('/admin/bookings');
-});
-
 // Route: Admin Bookings Dashboard
-app.get('/admin/bookings', requireAdminAuth, async (req, res) => {
+app.get('/admin', requireAdminAuth, async (req, res) => {
   try {
     const bookings = await db.getBookings();
     res.render('bookings', {
@@ -209,13 +204,18 @@ app.get('/admin/bookings', requireAdminAuth, async (req, res) => {
       bookings
     });
   } catch (error) {
-    console.error('Error in GET /admin/bookings:', error);
+    console.error('Error in GET /admin:', error);
     res.status(500).send('대시보드를 로드하는 중 오류가 발생했습니다.');
   }
 });
 
+// Route: Admin redirect (backward compatibility for old path)
+app.get('/admin/bookings', (req, res) => {
+  res.redirect('/admin');
+});
+
 // Route: Export Bookings as CSV
-app.get('/admin/bookings/export', requireAdminAuth, async (_req, res) => {
+app.get('/admin/export', requireAdminAuth, async (_req, res) => {
   try {
     const bookings = await db.getBookings();
     const headers = ['이름', '학번/학과', '연락처', '예매일시'];
@@ -227,13 +227,13 @@ app.get('/admin/bookings/export', requireAdminAuth, async (_req, res) => {
     res.setHeader('Content-Disposition', 'attachment; filename="bookings.csv"');
     res.send('﻿' + csv);
   } catch (error) {
-    console.error('Error in GET /admin/bookings/export:', error);
+    console.error('Error in GET /admin/export:', error);
     res.status(500).send('내보내기 중 오류가 발생했습니다.');
   }
 });
 
 // Route: DELETE Booking (Admin Action)
-app.post('/admin/bookings/delete', requireAdminAuth, async (req, res) => {
+app.post('/admin/delete', requireAdminAuth, async (req, res) => {
   const { code } = req.body;
   if (!code) {
     return res.status(400).json({ error: '예매 코드가 필요합니다.' });
@@ -246,7 +246,7 @@ app.post('/admin/bookings/delete', requireAdminAuth, async (req, res) => {
       res.status(404).json({ error: '예매 내역을 찾을 수 없습니다.' });
     }
   } catch (error) {
-    console.error('Error in POST /admin/bookings/delete:', error);
+    console.error('Error in POST /admin/delete:', error);
     res.status(500).json({ error: '취소 처리 중 서버 오류가 발생했습니다.' });
   }
 });
