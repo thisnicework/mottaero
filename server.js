@@ -9,6 +9,16 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Redirect from mottaero to meottaero
+app.use((req, res, next) => {
+  const host = req.get('host') || '';
+  if (host.includes('mottaero')) {
+    const newHost = host.replace('mottaero', 'meottaero');
+    return res.redirect(301, `https://${newHost}${req.originalUrl}`);
+  }
+  next();
+});
+
 // Set up template engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
