@@ -163,7 +163,7 @@ app.get('/reload/container', (req, res) => {
 });
 
 // Route: POST Booking Form
-app.post('/projects/춤출자유vol-2/book', async (req, res) => {
+app.post('/projects/:semesterId/book', async (req, res) => {
   const { name, studentId, phone, tickets } = req.body;
   if (!name || !studentId || !phone) {
     return res.status(400).json({ error: '모든 필드를 올바르게 입력해 주세요.' });
