@@ -1,27 +1,30 @@
 <%- include('partials/header') %>
 
-<main class="fixed">
-  <section id="one" class="left" aria-expanded="true">
-    <p>Hello, World!</p>
-    <p>Welcome to the www showroom of MOTTAERO at <a href="https://www.seoularts.ac.kr/" rel="noopener noreferrer" target="_blank">Seoul Institute of the Arts</a>.</p>
-    <p>MOTTAERO is a performance crew dedicated to exploring movement, expression, and collaborative arts. Guided by the philosophy of performing "as we please, in our own style."</p>
-    <p>Happy exploring!</p>
-  </section>
-  <section id="two" class="right" aria-expanded="true">
-    <div class="project init">
-      <div class="headline">
-        <h2>MOTTAERO&thinsp;&mdash;&thinsp;<span class="bold"><a href="/projects/vol-1">춤 출 자유 Vol.1</a></span></h2>
+  <main class="fixed">
+    <section id="one" class="left" aria-expanded="true">
+      <p>Hello, World!</p>
+      <p>Welcome to the www showroom of MOTTAERO at <a href="https://www.seoularts.ac.kr/" rel="noopener noreferrer"
+          target="_blank">Seoul Institute of the Arts</a>.</p>
+      <p>MOTTAERO is a performance crew dedicated to exploring movement, expression, and collaborative arts. Guided by
+        the philosophy of performing "as we please, in our own style."</p>
+      <p>Happy exploring!</p>
+    </section>
+    <section id="two" class="right" aria-expanded="true">
+      <div class="project init">
+        <div class="headline">
+          <h2>MOTTAERO&thinsp;&mdash;&thinsp;<span class="bold"><a href="/projects/춤출자유vol-1">춤 출 자유 Vol.1</a></span>
+          </h2>
+        </div>
+        <div class="gallery">
+          <a href="/projects/vol-1" class="block">
+            <video class="gallery" autoplay loop muted playsinline style="width: 100%; border: none;">
+              <source src="https://pysxtikwokpcyfjstdyv.supabase.co/storage/v1/object/public/videos/mottearo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </a>
+        </div>
       </div>
-      <div class="gallery">
-        <a href="/projects/vol-1" class="block">
-          <video class="gallery" autoplay loop muted playsinline style="width: 100%; border: none;">
-            <source src="/assets/video/brand.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </a>
-      </div>
-    </div>
-  </section>
-</main>
+    </section>
+  </main>
 
-<%- include('partials/footer') %>
+  <%- include('partials/footer') %>

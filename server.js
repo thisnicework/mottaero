@@ -194,6 +194,11 @@ function requireAdminAuth(req, res, next) {
   next();
 }
 
+// Route: Admin redirect
+app.get('/admin', requireAdminAuth, (_req, res) => {
+  res.redirect('/admin/bookings');
+});
+
 // Route: Admin Bookings Dashboard
 app.get('/admin/bookings', requireAdminAuth, async (req, res) => {
   try {
